@@ -26,7 +26,9 @@ jobs:
         uses: actions/checkout@main
 
       - name: Checkout repository submodules
-        run: git submodule update --init --recursive
+        run: |
+          git submodule update --init --recursive 
+          git clone -b renderer/mobileglues https://github.com/AngelAuraMC/Amethyst-iOS.git Amethyst_iOS_no_errors
 
       - name: Get gl4es latest commit hash
         id: gl4es-sha
@@ -82,11 +84,11 @@ jobs:
 
       - name: Patch files
         run: |
-          gpatch ./Amethyst-iOS/Natives/MinecraftResourceDownloadTask.m MinecraftResourceDownloadTask.patch
+          gpatch ./Amethyst_iOS_no_errors/Natives/MinecraftResourceDownloadTask.m MinecraftResourceDownloadTask.patch
 
       - name: Build for ${{ matrix.platform_name }}
         run: |
-          cd Amethyst-iOS
+          cd Amethyst_iOS_no_errors
           export PATH=/opt/homebrew/bin:$PATH
           export SLIMMED=1
           if [ "${{ matrix.platform_name }}" == "ios" ]; then
@@ -105,29 +107,29 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: org.angelauramc.amethyst-${{ matrix.platform_name }}.ipa
-          path: Amethyst-iOS/artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}.ipa
+          path: Amethyst_iOS_no_errors/artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload regular tipa
         uses: actions/upload-artifact@main
         with:
           name: org.angelauramc.amethyst-${{ matrix.platform_name }}-trollstore.tipa
-          path: Amethyst-iOS/artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}-trollstore.tipa
+          path: Amethyst_iOS_no_errors/artifacts/org.angelauramc.amethyst-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload slimmed ipa
         uses: actions/upload-artifact@main
         with:
           name: org.angelauramc.amethyst.slimmed-${{ matrix.platform_name }}.ipa
-          path: Amethyst-iOS/artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}.ipa
+          path: Amethyst_iOS_no_errors/artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed tipa
         uses: actions/upload-artifact@main
         with:
           name: org.angelauramc.amethyst.slimmed-${{ matrix.platform_name }}-trollstore.tipa
-          path: Amethyst-iOS/artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
+          path: Amethyst_iOS_no_errors/artifacts/org.angelauramc.amethyst.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload PojavLauncher.dSYM
         uses: actions/upload-artifact@main
         if: matrix.platform_name == 'ios'
         with:
           name: AngelAuraAmethyst.dSYM
-          path: Amethyst-iOS/artifacts/AngelAuraAmethyst.dSYM
+          path: Amethyst_iOS_no_errors/artifacts/AngelAuraAmethyst.dSYM
