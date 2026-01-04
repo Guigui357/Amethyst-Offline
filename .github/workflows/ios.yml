@@ -88,6 +88,7 @@ jobs:
 
       - name: Build for ${{ matrix.platform_name }}
         run: |
+          set -x
           cd Amethyst_iOS_no_errors
           export PATH=/opt/homebrew/bin:$PATH
           export SLIMMED=1
