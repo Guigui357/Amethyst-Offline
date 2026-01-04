@@ -28,7 +28,7 @@ jobs:
       - name: Checkout repository submodules
         run: |
           git submodule update --init --recursive 
-          git clone -b renderer/mobileglues https://github.com/AngelAuraMC/Amethyst-iOS.git Amethyst_iOS_no_errors
+          git clone --recursive -b renderer/mobileglues https://github.com/AngelAuraMC/Amethyst-iOS.git Amethyst_iOS_no_errors
 
       - name: Get gl4es latest commit hash
         id: gl4es-sha
